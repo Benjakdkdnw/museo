@@ -328,11 +328,11 @@
         '#######.......#######',
         '#######.A...B.#######',
         '#######.......#######',
-        '#V.................V#',
+        '#.V..V.........V..V.#',
         '#.........S.........#',
         'b............N......c',
         '#...................#',
-        '#V.................V#',
+        '#...................#',
         '#######.......#######',
         '#######.QR..D.#######',
         '#######.......#######',
@@ -404,11 +404,11 @@
       map: [
         '#####################',
         '######=========######',
-        '####.............####',
+        '####V...........V####',
         '###...............###',
         '#Y.................Y#',
         '#.....N.............#',
-        '#V........B........V#',
+        '#.........B.........#',
         '#...................#',
         '#Y.................Y#',
         '###.......S.......###',
@@ -1245,16 +1245,23 @@
         return;
       }
       case 'window': {
-        ctx.fillStyle = '#8a5f3c'; ctx.fillRect(x, y - 10, T, T + 16);
-        ctx.fillStyle = '#25405e'; ctx.fillRect(x + 4, y - 6, T - 8, T + 4);
+        // sits in the wall above this tile
+        var wy = y - T + 2, wh = T - 4;
+        ctx.fillStyle = '#8a5f3c'; ctx.fillRect(x + 1, wy - 2, T - 2, wh + 6);
+        ctx.fillStyle = '#25405e'; ctx.fillRect(x + 5, wy + 2, T - 10, wh - 2);
         ctx.fillStyle = 'rgba(180,220,255,.6)';
-        for (var rn = 0; rn < 8; rn++) {
-          var rx = x + 5 + ((rn * 5 + Math.floor(tick / 2)) % (T - 11));
-          var ry = y - 6 + ((rn * 11 + Math.floor(tick * 1.7)) % (T + 2));
-          ctx.fillRect(rx, ry, 1, 5);
+        for (var rn = 0; rn < 7; rn++) {
+          var rx = x + 6 + ((rn * 5 + Math.floor(tick / 2)) % (T - 13));
+          var ry = wy + 2 + ((rn * 9 + Math.floor(tick * 1.7)) % (wh - 6));
+          ctx.fillRect(rx, ry, 1, 4);
         }
-        ctx.fillStyle = '#8a5f3c'; ctx.fillRect(x + 15, y - 6, 3, T + 4); ctx.fillRect(x + 4, y + 6, T - 8, 3);
-        ctx.fillStyle = '#a87a4e'; ctx.fillRect(x, y + T - 4, T, 6);
+        ctx.fillStyle = '#8a5f3c';
+        ctx.fillRect(x + 15, wy + 2, 2, wh - 2);
+        ctx.fillRect(x + 5, wy + 2 + Math.floor((wh - 2) / 2), T - 10, 2);
+        ctx.fillStyle = '#a87a4e'; ctx.fillRect(x, wy + wh + 2, T, 4);
+        var wg = ctx.createRadialGradient(x + 16, wy + wh / 2, 4, x + 16, wy + wh / 2, 52);
+        wg.addColorStop(0, 'rgba(150,190,230,.16)'); wg.addColorStop(1, 'rgba(150,190,230,0)');
+        ctx.fillStyle = wg; ctx.fillRect(x - 40, wy - 20, 112, 100);
         return;
       }
       case 'board':
